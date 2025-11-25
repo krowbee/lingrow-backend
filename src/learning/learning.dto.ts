@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -109,8 +109,7 @@ export class AnswerDTO {
   @IsString()
   text: string;
 
-  @Expose()
-  @IsBoolean()
+  @Exclude()
   isCorrect: boolean;
 
   @Expose()
