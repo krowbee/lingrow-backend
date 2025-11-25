@@ -110,7 +110,6 @@ export class AnswerDTO {
   text: string;
 
   @Exclude()
-  @IsBoolean()
   isCorrect: boolean;
 
   @Expose()
