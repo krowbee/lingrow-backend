@@ -11,7 +11,7 @@ export class LessonService {
   ): Promise<Lesson | null> {
     return this.prisma.lesson.findUnique({
       where: lessonWhereUniqueInput,
-      include: { tasks: true },
+      include: { tasks: { include: { answers: true } } },
     });
   }
 
