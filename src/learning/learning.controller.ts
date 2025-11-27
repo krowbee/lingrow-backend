@@ -1,5 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
-import { AuthOnly } from 'src/auth/auth.decorators';
+import { Controller } from '@nestjs/common';
 
 @Controller('learning')
 export class LearningController {}
