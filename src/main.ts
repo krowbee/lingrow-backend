@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import morgan from 'morgan';
@@ -11,5 +9,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`Server works on: 127.0.0.1:3000`);
 }
 bootstrap();
