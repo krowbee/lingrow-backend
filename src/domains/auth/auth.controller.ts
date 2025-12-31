@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
 import { LoginDto, RegisterDto } from './types/AuthDto';
 import { AuthService } from './auth.service';
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import {
   refreshCookieOptions,
   accessCookieOptions,
@@ -13,6 +13,7 @@ import {
 } from './decorators/auth.decorators';
 import { RefreshToken } from './decorators/refresh-token.decorator';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 @ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
@@ -36,7 +37,11 @@ export class AuthController {
     res.cookie('accessToken', accessToken, accessCookieOptions);
     res.cookie('refreshToken', refreshToken, refreshCookieOptions);
   }
-  @ApiOperation({ summary: 'Login' })
+
+  @ApiOperation({
+    summary: 'Login',
+    description: 'Login user, and returns message, UserDto',
+  })
   @ApiBody({ type: LoginDto })
   @GuestOnly()
   @HttpCode(200)
@@ -52,7 +57,10 @@ export class AuthController {
     return { message: 'Login succesful', user };
   }
 
-  @ApiOperation({ summary: 'Register' })
+  @ApiOperation({
+    summary: 'Register',
+    description: 'Register user, returns message, UserDto',
+  })
   @ApiBody({ type: RegisterDto })
   @GuestOnly()
   @Post('/register')
@@ -67,7 +75,10 @@ export class AuthController {
     return { message: 'User created succesfully', user };
   }
 
-  @ApiOperation({ summary: 'Refresh Token' })
+  @ApiOperation({
+    summary: 'Refresh Token',
+    description: 'Refresh user tokens, and set new tokens in cookies',
+  })
   @HttpCode(200)
   @RequireRefreshToken()
   @Post('/refresh')
@@ -81,7 +92,10 @@ export class AuthController {
     return { message: 'Refreshed succesfully' };
   }
 
-  @ApiOperation({ summary: 'Logout' })
+  @ApiOperation({
+    summary: 'Logout',
+    description: 'logout user, and clear tokens in cookies',
+  })
   @AuthOnly()
   @Post('/logout')
   async logout(

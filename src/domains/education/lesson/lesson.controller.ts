@@ -6,7 +6,10 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 export class LessonController {
   constructor(private lessonLogicService: LessonLogicService) {}
 
-  @ApiOperation({ summary: 'Get lessons by slug' })
+  @ApiOperation({
+    summary: 'Get lesson by slug',
+    description: "Returns lesson object by lesson's slug",
+  })
   @ApiParam({ name: 'lessonSlug', type: String, description: "Lesson's slug" })
   @Get('/:lessonSlug')
   async getLessonWithTasks(@Param('lessonSlug') lessonSlug: string) {
