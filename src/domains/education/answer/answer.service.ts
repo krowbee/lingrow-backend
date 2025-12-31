@@ -1,44 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { Answer, Prisma } from '@prisma/client';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import PrismaService from 'src/lib/prisma/prisma.service';
 
 @Injectable()
 export class AnswerService {
   constructor(private prisma: PrismaService) {}
 
-  async getAnswer(
-    answerWhereUniqueInput: Prisma.AnswerWhereUniqueInput,
-  ): Promise<Answer | null> {
-    return this.prisma.answer.findUnique({ where: answerWhereUniqueInput });
-  }
-
-  async getAnswers(
-    answerWhereInput: Prisma.AnswerWhereInput,
-  ): Promise<Answer[]> {
-    return this.prisma.answer.findMany({
-      where: answerWhereInput || undefined,
+  async checkAnswer(
+    answerId: number,
+    taskId: number,
+  ): Promise<{ isCorrect: boolean }> {
+    const answer = await this.prisma.answer.findUnique({
+      where: { id: answerId, taskId: taskId },
+      select: { isCorrect: true },
     });
-  }
 
-  async createAnswer(
-    answerCreateInput: Prisma.AnswerCreateInput,
-  ): Promise<Answer> {
-    return this.prisma.answer.create({ data: answerCreateInput });
-  }
-
-  async updateAnswer(
-    answerWhereUniqueInput: Prisma.AnswerWhereUniqueInput,
-    answerUpdateInput: Prisma.AnswerUpdateInput,
-  ): Promise<Answer> {
-    return this.prisma.answer.update({
-      where: answerWhereUniqueInput,
-      data: answerUpdateInput,
-    });
-  }
-
-  async deleteAnswer(
-    answerWhereUniqueInput: Prisma.AnswerWhereUniqueInput,
-  ): Promise<Answer> {
-    return this.prisma.answer.delete({ where: answerWhereUniqueInput });
+    if (!answer) throw new BadRequestException('Incorrect answer data');
+    return { isCorrect: answer.isCorrect };
   }
 }

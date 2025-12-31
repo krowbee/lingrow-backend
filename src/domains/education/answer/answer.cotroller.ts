@@ -1,10 +1,11 @@
 import { Controller, Param, Post } from '@nestjs/common';
-import { AnswerLogicService } from './answer.logic.service';
+import { AnswerService } from './answer.service';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 @ApiTags('Answers API')
 @Controller('answer')
 export class AnswerController {
-  constructor(private answerLogicService: AnswerLogicService) {}
+  constructor(private answerService: AnswerService) {}
+
   @ApiOperation({
     summary: 'Check is answer correct',
     description: 'Returns true if answer correct, or false if not',
@@ -16,6 +17,6 @@ export class AnswerController {
     @Param('answerId') answerId: number,
     @Param('taskId') taskId: number,
   ): Promise<{ isCorrect: boolean }> {
-    return this.answerLogicService.checkAnswer(answerId, taskId);
+    return this.answerService.checkAnswer(answerId, taskId);
   }
 }
