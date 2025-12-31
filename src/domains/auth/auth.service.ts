@@ -13,7 +13,7 @@ import {
 } from './types/authTypes';
 import { CryptoService } from './crypto.service';
 import { LoginDto, LogoutDto, RegisterDto, UserDto } from './types/AuthDto';
-import { plainToInstance } from 'class-transformer';
+import { toDto } from 'src/lib/transform';
 import { TokenService } from './tokens/token.service';
 import { User } from '@prisma/client';
 
@@ -178,9 +178,7 @@ export class AuthService {
     refreshToken: string;
     user: UserDto;
   }> {
-    const responseUser: UserDto = plainToInstance(UserDto, user, {
-      excludeExtraneousValues: true,
-    });
+    const responseUser = toDto(UserDto, user);
     const payload = this.tokenService.generatePayload(user);
     const refreshToken = await this.createSession({ user, payload });
     const accessToken = await this.tokenService.generateAccessToken(payload);
