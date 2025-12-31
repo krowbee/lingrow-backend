@@ -12,7 +12,8 @@ import {
   RequireRefreshToken,
 } from './decorators/auth.decorators';
 import { RefreshToken } from './decorators/refresh-token.decorator';
-
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+@ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -35,7 +36,8 @@ export class AuthController {
     res.cookie('accessToken', accessToken, accessCookieOptions);
     res.cookie('refreshToken', refreshToken, refreshCookieOptions);
   }
-
+  @ApiOperation({ summary: 'Login' })
+  @ApiBody({ type: LoginDto })
   @GuestOnly()
   @HttpCode(200)
   @Post('/login')
@@ -50,6 +52,8 @@ export class AuthController {
     return { message: 'Login succesful', user };
   }
 
+  @ApiOperation({ summary: 'Register' })
+  @ApiBody({ type: RegisterDto })
   @GuestOnly()
   @Post('/register')
   async register(
@@ -63,6 +67,7 @@ export class AuthController {
     return { message: 'User created succesfully', user };
   }
 
+  @ApiOperation({ summary: 'Refresh Token' })
   @HttpCode(200)
   @RequireRefreshToken()
   @Post('/refresh')
@@ -76,6 +81,7 @@ export class AuthController {
     return { message: 'Refreshed succesfully' };
   }
 
+  @ApiOperation({ summary: 'Logout' })
   @AuthOnly()
   @Post('/logout')
   async logout(

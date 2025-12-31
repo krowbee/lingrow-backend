@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import {
   IsEmail,
@@ -8,10 +9,12 @@ import {
 } from 'class-validator';
 
 export class LoginDto {
+  @ApiProperty({ example: 'test@gmail.com', type: String })
   @Expose()
   @IsEmail()
   email: string;
 
+  @ApiProperty({ example: '123456789', type: String })
   @Expose()
   @IsString()
   @MinLength(6)
@@ -20,10 +23,12 @@ export class LoginDto {
 }
 
 export class RegisterDto {
+  @ApiProperty({ example: 'test@gmail.com', type: String })
   @Expose()
   @IsString()
   name: string;
 
+  @ApiProperty({ example: '123456789', type: String })
   @Expose()
   @IsEmail()
   email: string;
