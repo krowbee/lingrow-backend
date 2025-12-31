@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import PrismaService from 'src/lib/prisma/prisma.service';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AnswerService {
       select: { isCorrect: true },
     });
 
-    if (!answer) throw new BadRequestException('Incorrect answer data');
+    if (!answer) throw new NotFoundException('Incorrect answer data');
     return { isCorrect: answer.isCorrect };
   }
 }
