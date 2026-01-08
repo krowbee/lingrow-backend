@@ -32,7 +32,7 @@ export type GetCourseProgressData = {
 
 export type GetLessonProgressData = {
   userId: number;
-  lessonId: number;
+  lessonSlug: string;
 };
 
 export type CreateProgressData = {

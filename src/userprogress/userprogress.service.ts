@@ -60,7 +60,7 @@ export class UserProgressService {
     const progress = await this.prisma.userProgress.findMany({
       where: {
         userId: getLessonProgressData.userId,
-        task: { lessonId: getLessonProgressData.lessonId },
+        task: { lesson: { slug: getLessonProgressData.lessonSlug } },
       },
       include: { answer: true },
     });

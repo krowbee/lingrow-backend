@@ -25,4 +25,21 @@ export class UserProgressController {
       courseSlug,
     });
   }
+
+  @ApiOperation({
+    summary: 'Get lesson progress by lesson id (AuthOnly)',
+    description: "Returns user's lesson progress",
+  })
+  @ApiParam({ name: 'lessonSlug', type: String, description: "Lesson's slug" })
+  @AuthOnly()
+  @Get('/lesson/:lessonSlug')
+  async getUserLessonProgress(
+    @Param('lessonSlug') lessonSlug: string,
+    @CurrentUser() user: UserDto,
+  ) {
+    return this.userProgressService.getLessonProgress({
+      lessonSlug,
+      userId: user.id,
+    });
+  }
 }
