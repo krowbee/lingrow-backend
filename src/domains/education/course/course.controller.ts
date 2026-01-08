@@ -7,7 +7,7 @@ export class CourseController {
   constructor(private courseService: CourseService) {}
 
   @ApiOperation({
-    summary: 'Get list of courses',
+    summary: 'Get list of courses (AuthOnly)',
     description: 'Returns list of courses',
   })
   @Get('/')
@@ -17,7 +17,7 @@ export class CourseController {
   }
 
   @ApiOperation({
-    summary: 'Get lessons by course slug',
+    summary: 'Get lessons by course slug (AuthOnly)',
     description: 'Returns list of lessons of particular course',
   })
   @ApiParam({ name: 'courseSlug', type: String, description: "Course's slug" })

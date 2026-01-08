@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { SessionModule } from 'src/domains/auth/session/session.module';
 import { UserModule } from 'src/user/user.module';
@@ -10,6 +10,7 @@ import { AuthOnlyGuard } from './guards/authOnly.guard';
 import { IncludeRefreshGuard } from './guards/include-refresh.guard';
 import { CryptoService } from './crypto.service';
 
+@Global()
 @Module({
   imports: [UserModule, SessionModule, JwtModule.register({})],
   providers: [
@@ -21,6 +22,6 @@ import { CryptoService } from './crypto.service';
     IncludeRefreshGuard,
   ],
   controllers: [AuthController],
-  exports: [AuthModule],
+  exports: [AuthModule, TokenService],
 })
 export class AuthModule {}
