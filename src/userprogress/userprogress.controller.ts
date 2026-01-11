@@ -1,9 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CurrentUser } from 'src/domains/auth/decorators/current-user.decorator';
-import { UserDto } from 'src/domains/auth/types/AuthDto';
+
 import { UserProgressService } from './userprogress.service';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { AuthOnly } from 'src/domains/auth/decorators/auth.decorators';
+import type { TokenPayload } from 'src/domains/auth/types/authTypes';
+import { CreateProgressDto } from './userprogress.dto';
 
 @Controller('progress')
 export class UserProgressController {
@@ -18,7 +20,7 @@ export class UserProgressController {
   @Get('/course/:courseSlug')
   async getUserCourseProgress(
     @Param('courseSlug') courseSlug: string,
-    @CurrentUser() user: UserDto,
+    @CurrentUser() user: TokenPayload,
   ) {
     return this.userProgressService.getCourseProgress({
       userId: user.id,
@@ -35,11 +37,25 @@ export class UserProgressController {
   @Get('/lesson/:lessonSlug')
   async getUserLessonProgress(
     @Param('lessonSlug') lessonSlug: string,
-    @CurrentUser() user: UserDto,
+    @CurrentUser() user: TokenPayload,
   ) {
     return this.userProgressService.getLessonProgress({
       lessonSlug,
       userId: user.id,
     });
+  }
+
+  @ApiOperation({
+    summary: 'Create user progress',
+    description: 'Creates user progress',
+  })
+  @AuthOnly()
+  @Post('/')
+  async createUserProgress(
+    @Body() body: CreateProgressDto,
+    @CurrentUser() user: TokenPayload,
+  ) {
+    const data = { userId: user.id, ...body };
+    return this.userProgressService.createUserProgress(data);
   }
 }

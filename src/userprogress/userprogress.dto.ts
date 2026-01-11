@@ -41,6 +41,11 @@ export type CreateProgressData = {
   answerId: number;
 };
 
+export class CreateProgressDto {
+  taskId: number;
+  answerId: number;
+}
+
 export type UserProgressWithAnswer = UserProgress & { answer: Answer };
 
 export type UpdateProgressData = {

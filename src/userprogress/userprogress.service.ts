@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import PrismaService from 'src/lib/prisma/prisma.service';
 import {
   DeleteLessonProgressData,
@@ -9,6 +9,7 @@ import {
   UserProgressWithAnswer,
 } from './userprogress.dto';
 import { CreateProgressData, LessonProgress } from './userprogress.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserProgressService {
@@ -72,27 +73,49 @@ export class UserProgressService {
   async createUserProgress(
     createProgressData: CreateProgressData,
   ): Promise<TaskProgress[]> {
-    const progress = await this.prisma.userProgress.create({
-      data: createProgressData,
-      include: { answer: true },
-    });
-    return this.generateTaskProgress(progress);
+    try {
+      const progress = await this.prisma.userProgress.create({
+        data: createProgressData,
+        include: { answer: true },
+      });
+
+      return this.generateTaskProgress(progress);
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2025'
+      ) {
+        throw new NotFoundException();
+      }
+      throw err;
+    }
   }
 
   async updateUserProgress(
     updateProgressData: UpdateProgressData,
   ): Promise<TaskProgress[]> {
-    const progress = await this.prisma.userProgress.update({
-      where: {
-        taskId_userId: {
-          taskId: updateProgressData.taskId,
-          userId: updateProgressData.userId,
+    try {
+      const progress = await this.prisma.userProgress.update({
+        where: {
+          taskId_userId: {
+            taskId: updateProgressData.taskId,
+            userId: updateProgressData.userId,
+          },
         },
-      },
-      data: { answerId: updateProgressData.answerId },
-      include: { answer: true },
-    });
-    return this.generateTaskProgress(progress);
+        data: { answerId: updateProgressData.answerId },
+        include: { answer: true },
+      });
+
+      return this.generateTaskProgress(progress);
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2025'
+      ) {
+        throw new NotFoundException();
+      }
+      throw err;
+    }
   }
 
   async deleteLessonProgress(
