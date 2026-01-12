@@ -50,13 +50,12 @@ export class UserProgressController {
     description: 'Creates user progress',
   })
   @AuthOnly()
-  @Post('/:taskId')
+  @Post('/')
   async createUserProgress(
     @Body() body: CreateProgressDto,
     @CurrentUser() user: TokenPayload,
-    @Param('taskId') taskId: number,
   ) {
-    const data = { userId: user.id, taskId:taskId ...body };
+    const data = { userId: user.id, ...body };
     return this.userProgressService.createUserProgress(data);
   }
 
