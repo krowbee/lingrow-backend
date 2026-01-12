@@ -64,12 +64,13 @@ export class UserProgressController {
     description: 'Updates user progress',
   })
   @AuthOnly()
-  @Patch('/')
+  @Patch('/:taskId')
   async updateUserProgress(
     @Body() body: UpdateProgressDto,
     @CurrentUser() user: TokenPayload,
+    @Param('taskId') taskId: number,
   ) {
-    const data = { userId: user.id, ...body };
+    const data = { userId: user.id, taskId: taskId, ...body };
     return this.userProgressService.updateUserProgress(data);
   }
 }
