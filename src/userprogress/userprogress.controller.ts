@@ -2,10 +2,14 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CurrentUser } from 'src/domains/auth/decorators/current-user.decorator';
 
 import { UserProgressService } from './userprogress.service';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { AuthOnly } from 'src/domains/auth/decorators/auth.decorators';
 import type { TokenPayload } from 'src/domains/auth/types/authTypes';
-import { CreateProgressDto, UpdateProgressDto } from './userprogress.dto';
+import {
+  CreateProgressDto,
+  TaskProgress,
+  UpdateProgressDto,
+} from './userprogress.dto';
 
 @Controller('progress')
 export class UserProgressController {
@@ -15,6 +19,7 @@ export class UserProgressController {
     summary: 'Get list of lessons progress by course slug (AuthOnly)',
     description: 'Returns list of lessons progress',
   })
+  @ApiResponse({ status: 200, type: [TaskProgress] })
   @ApiParam({ name: 'courseSlug', type: String, description: "Course's slug" })
   @AuthOnly()
   @Get('/course/:courseSlug')
@@ -32,6 +37,7 @@ export class UserProgressController {
     summary: 'Get lesson progress by lesson id (AuthOnly)',
     description: "Returns user's lesson progress",
   })
+  @ApiResponse({ status: 200, type: [TaskProgress] })
   @ApiParam({ name: 'lessonSlug', type: String, description: "Lesson's slug" })
   @AuthOnly()
   @Get('/lesson/:lessonSlug')
@@ -49,6 +55,7 @@ export class UserProgressController {
     summary: 'Create user progress',
     description: 'Creates user progress',
   })
+  @ApiResponse({ status: 201, type: [TaskProgress] })
   @AuthOnly()
   @Post('/')
   async createUserProgress(
@@ -63,6 +70,7 @@ export class UserProgressController {
     summary: 'Update user progress',
     description: 'Updates user progress',
   })
+  @ApiResponse({ status: 200, type: [TaskProgress] })
   @AuthOnly()
   @Patch('/:taskId')
   async updateUserProgress(
