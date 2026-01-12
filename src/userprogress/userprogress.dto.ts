@@ -42,7 +42,9 @@ export class CreateProgressData {
 }
 
 export class CreateProgressDto {
+  @IsNumber()
   taskId: number;
+  @IsNumber()
   answerId: number;
 }
 
