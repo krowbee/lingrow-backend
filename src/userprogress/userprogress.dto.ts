@@ -50,6 +50,13 @@ export class CreateProgressDto {
 
 export type UserProgressWithAnswer = UserProgress & { answer: Answer };
 
+export class UpdateProgressDto {
+  @IsNumber()
+  taskId: number;
+  @IsNumber()
+  answerId: number;
+}
+
 export class UpdateProgressData {
   userId: number;
   taskId: number;
