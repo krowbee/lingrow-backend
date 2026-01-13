@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/domains/auth/decorators/current-user.decorator';
 
 import { UserProgressService } from './userprogress.service';
@@ -71,6 +80,7 @@ export class UserProgressController {
     description: 'Updates user progress',
   })
   @ApiResponse({ status: 200, type: [TaskProgress] })
+  @HttpCode(200)
   @AuthOnly()
   @Patch('/:taskId')
   async updateUserProgress(
@@ -80,5 +90,20 @@ export class UserProgressController {
   ) {
     const data = { userId: user.id, taskId: taskId, ...body };
     return this.userProgressService.updateUserProgress(data);
+  }
+  @ApiOperation({
+    summary: "Delete user's lesson progress",
+    description: "Deletes user's lesson progress",
+  })
+  @ApiResponse({ status: 200, type: Number })
+  @AuthOnly()
+  @HttpCode(200)
+  @Delete('/lesson/:lessonId')
+  async deleteLessonProgress(
+    @Param('lessonId') lessonId: number,
+    @CurrentUser() user: TokenPayload,
+  ) {
+    const data = { userId: user.id, lessonId };
+    return this.userProgressService.deleteLessonProgress(data);
   }
 }
