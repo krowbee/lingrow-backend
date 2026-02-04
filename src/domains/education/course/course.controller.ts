@@ -7,7 +7,7 @@ export class CourseController {
   constructor(private courseService: CourseService) {}
 
   @ApiOperation({
-    summary: 'Get list of courses (AuthOnly)',
+    summary: 'Get list of courses',
     description: 'Returns list of courses',
   })
   @Get('/')

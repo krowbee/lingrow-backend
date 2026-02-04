@@ -16,6 +16,7 @@ import { AuthOnly } from 'src/domains/auth/decorators/auth.decorators';
 import type { TokenPayload } from 'src/domains/auth/types/authTypes';
 import {
   CreateProgressDto,
+  LessonProgress,
   TaskProgress,
   UpdateProgressDto,
 } from './userprogress.dto';
@@ -28,7 +29,7 @@ export class UserProgressController {
     summary: 'Get list of lessons progress by course slug (AuthOnly)',
     description: 'Returns list of lessons progress',
   })
-  @ApiResponse({ status: 200, type: [TaskProgress] })
+  @ApiResponse({ status: 200, type: [LessonProgress] })
   @ApiParam({ name: 'courseSlug', type: String, description: "Course's slug" })
   @AuthOnly()
   @Get('/course/:courseSlug')

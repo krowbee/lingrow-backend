@@ -3,11 +3,6 @@ import { Answer, UserProgress } from '@prisma/client';
 import { Expose } from 'class-transformer';
 import { IsBoolean, IsNumber } from 'class-validator';
 
-export class LessonProgress {
-  lessonId: number;
-  isCompleted: boolean;
-}
-
 export class TaskProgress {
   @ApiProperty({ example: '1', type: Number })
   @Expose()
@@ -28,6 +23,17 @@ export class TaskProgress {
   @Expose()
   @IsBoolean()
   isCorrect: boolean;
+}
+
+export class LessonProgress {
+  @ApiProperty({ example: '1', type: Number })
+  @Expose()
+  @IsNumber()
+  lessonId: number;
+  @ApiProperty({ example: true, type: Boolean })
+  @Expose()
+  @IsBoolean()
+  isCompleted: boolean;
 }
 
 export class GetCourseProgressData {
