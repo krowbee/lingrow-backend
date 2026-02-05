@@ -2,6 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { AnswerDto } from '../answer/answer.dto';
 import {
   IsArray,
+  IsBoolean,
   IsNumber,
   IsOptional,
   IsString,
@@ -35,4 +36,8 @@ export class TaskDto {
   @Expose()
   @IsNumber()
   order: number;
+
+  @Expose()
+  @IsBoolean()
+  isCompleted: boolean;
 }
