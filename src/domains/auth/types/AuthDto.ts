@@ -58,4 +58,8 @@ export class UserDto {
   @Expose()
   @IsEmail()
   email: string;
+
+  @Expose()
+  @IsString()
+  role: string;
 }

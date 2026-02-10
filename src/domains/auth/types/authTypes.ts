@@ -1,6 +1,11 @@
 import { UserDto } from './AuthDto';
 
-export type TokenPayload = { id: number; email: string; jti: string };
+export type TokenPayload = {
+  id: number;
+  email: string;
+  jti: string;
+  role: string;
+};
 
 export type RotateSessionData = {
   oldJti: string;

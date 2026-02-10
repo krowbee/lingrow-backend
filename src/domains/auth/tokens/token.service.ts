@@ -60,6 +60,6 @@ export class TokenService {
 
   generatePayload(user: UserDto): TokenPayload {
     const jti = randomUUID();
-    return { id: user.id, email: user.email, jti: jti };
+    return { id: user.id, email: user.email, jti: jti, role: user.role };
   }
 }

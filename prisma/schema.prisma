@@ -13,6 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User{
   id Int @id @default(autoincrement())
   name String @db.VarChar(40)
@@ -21,6 +22,12 @@ model User{
   sessions Session[]
   subscription UserSubscription? // FREE by default
   progress UserProgress[]
+  role roles @default(user)
+}
+
+enum roles {
+  user
+  admin
 }
 
 model Session{
