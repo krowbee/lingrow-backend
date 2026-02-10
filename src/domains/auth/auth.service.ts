@@ -71,6 +71,14 @@ export class AuthService {
     return this.buildAuthResponse(user);
   }
 
+  async getMe(payload: TokenPayload) {
+    const user = await this.userService.findUser({ id: payload.id });
+    if (!user) {
+      throw invalidTokenErr;
+    }
+    return toDto(UserDto, user);
+  }
+
   async validateRefreshFlow(
     refreshToken: string,
   ): Promise<{ user: User; oldPayload: TokenPayload }> {

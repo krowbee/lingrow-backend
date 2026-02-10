@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Res } from '@nestjs/common';
 import { LoginDto, RegisterDto } from './types/AuthDto';
 import { AuthService } from './auth.service';
 import type { Response } from 'express';
@@ -13,6 +13,8 @@ import {
 } from './decorators/auth.decorators';
 import { RefreshToken } from './decorators/refresh-token.decorator';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from './decorators/current-user.decorator';
+import type { TokenPayload } from './types/authTypes';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -91,6 +93,18 @@ export class AuthController {
     console.log(reqRefreshToken);
     this.setCookies({ accessToken, refreshToken }, res);
     return { message: 'Refreshed succesfully' };
+  }
+
+  @ApiOperation({
+    summary: 'Get-Me',
+    description: 'check auth, return user object',
+  })
+  @AuthOnly()
+  @Get('/me')
+  @HttpCode(200)
+  async getMe(@CurrentUser() payload: TokenPayload) {
+    const actualUser = await this.authService.getMe(payload);
+    return actualUser;
   }
 
   @ApiOperation({
