@@ -86,7 +86,7 @@ enum EnglishLevels {
 model Lesson{
   id Int @id @default(autoincrement())
   name String
-  theory String
+  theory Json
   slug String @unique
   englishLevel EnglishLevels
   course Course @relation(fields: [courseId], references: [id])
