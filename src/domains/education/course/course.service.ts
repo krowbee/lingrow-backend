@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { toDto } from 'src/lib/transform';
 import { LessonService } from '../lesson/lesson.service';
-import { CourseDto } from './course.dto';
+import { CourseDto, CreateCourseDto } from './course.dto';
 import { PublicLessonDto } from '../lesson/lesson.dto';
 import PrismaService from 'src/lib/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CourseService {
@@ -25,5 +31,23 @@ export class CourseService {
     });
     if (!lessons.length) throw new NotFoundException("Incorrect course's slug");
     return lessons.map((lesson) => toDto(PublicLessonDto, lesson));
+  }
+
+  async createCourse(data: CreateCourseDto): Promise<CourseDto> {
+    try {
+      const course = await this.prisma.course.create({ data });
+      return toDto(CourseDto, course);
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new ConflictException('Курс із таким слагом вже існує');
+      }
+
+      throw new InternalServerErrorException(
+        'Щось пішло не так при створенні курсу',
+      );
+    }
   }
 }

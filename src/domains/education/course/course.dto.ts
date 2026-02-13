@@ -1,5 +1,6 @@
+import { PartialType } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CourseDto {
   @Expose()
@@ -18,3 +19,19 @@ export class CourseDto {
   @IsString()
   description: string;
 }
+
+export class CreateCourseDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  slug: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+}
+
+export class UpdateCourseDto extends PartialType(CreateCourseDto) {}
