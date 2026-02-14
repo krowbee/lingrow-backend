@@ -2,10 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateCourseDto } from './course.dto';
-import {
-  AdminOnly,
-  AuthOnly,
-} from 'src/domains/auth/decorators/auth.decorators';
+import { AdminOnly } from 'src/domains/auth/decorators/auth.decorators';
 
 @Controller('course')
 export class CourseController {
