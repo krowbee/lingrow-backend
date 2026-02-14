@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CourseService } from './course.service';
 import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
-import { CreateCourseDto } from './course.dto';
+import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { AdminOnly } from 'src/domains/auth/decorators/auth.decorators';
 
 @Controller('course')
@@ -38,6 +46,22 @@ export class CourseController {
   @Post('/')
   async createCourse(@Body() data: CreateCourseDto) {
     const course = await this.courseService.createCourse(data);
+    return course;
+  }
+
+  @ApiOperation({
+    summary: 'Update course (AdminOnly)',
+    description: 'Return course object',
+  })
+  @ApiParam({ type: Number, name: 'courseId' })
+  @ApiBody({ type: UpdateCourseDto })
+  @AdminOnly()
+  @Patch('/:courseId')
+  async updateCourse(
+    @Param('courseId', ParseIntPipe) courseId: number,
+    @Body() data: UpdateCourseDto,
+  ) {
+    const course = await this.courseService.updateCourse(data, courseId);
     return course;
   }
 }
