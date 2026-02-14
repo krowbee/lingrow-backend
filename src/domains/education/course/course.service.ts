@@ -75,4 +75,23 @@ export class CourseService {
       throw new InternalServerErrorException('Помилка при оновлені курсу');
     }
   }
+
+  async deleteCourse(courseId: number): Promise<CourseDto> {
+    try {
+      const course = await this.prisma.course.delete({
+        where: { id: courseId },
+      });
+      return toDto(CourseDto, course);
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2025'
+      ) {
+        throw new NotFoundException(
+          'Запис, який потрібно видалити, не знайдено',
+        );
+      }
+      throw new InternalServerErrorException('Помилка при видаленні курсу');
+    }
+  }
 }

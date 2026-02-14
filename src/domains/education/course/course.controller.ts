@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -62,6 +63,18 @@ export class CourseController {
     @Body() data: UpdateCourseDto,
   ) {
     const course = await this.courseService.updateCourse(data, courseId);
+    return course;
+  }
+
+  @ApiOperation({
+    summary: 'Delete course (AdminOnly)',
+    description: 'Return the deleted course object',
+  })
+  @ApiParam({ type: Number, name: 'courseId' })
+  @AdminOnly()
+  @Delete('/:courseId')
+  async deleteCourse(@Param('courseId', ParseIntPipe) courseId: number) {
+    const course = await this.courseService.deleteCourse(courseId);
     return course;
   }
 }
