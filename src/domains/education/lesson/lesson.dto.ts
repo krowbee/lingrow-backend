@@ -4,7 +4,6 @@ import { TaskDto } from '../task/task.dto';
 import {
   IsArray,
   IsEnum,
-  IsJSON,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -13,13 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { OmitType, PartialType } from '@nestjs/swagger';
-
-export enum EnglishLevels {
-  A1 = 'A1',
-  A2 = 'A2',
-  B1 = 'B1',
-  B2 = 'B2',
-}
+import { EnglishLevels } from '@prisma/client';
 
 export class PublicLessonDto {
   @Expose()
@@ -27,7 +20,7 @@ export class PublicLessonDto {
   id: number;
 
   @Expose()
-  @IsNumber()
+  @IsString()
   name: string;
 
   @Expose()
@@ -49,8 +42,8 @@ export class LessonDto {
   name: string;
 
   @Expose()
-  @IsJSON()
-  theory: JSON;
+  @IsObject()
+  theory: any;
 
   @Expose()
   @IsString()
