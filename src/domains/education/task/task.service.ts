@@ -90,9 +90,19 @@ export class TaskService {
     }
   }
 
-  async deleteTask(
-    taskWhereUniqueInput: Prisma.TaskWhereUniqueInput,
-  ): Promise<Task> {
-    return this.prisma.task.delete({ where: taskWhereUniqueInput });
+  async deleteTask(taskId: number): Promise<TaskDto> {
+    try {
+      const task = await this.prisma.task.delete({ where: { id: taskId } });
+
+      return toDto(TaskDto, task);
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2025'
+      ) {
+        throw new NotFoundException('Запис не знайдено');
+      }
+      throw new InternalServerErrorException('Виникла невідома помилка');
+    }
   }
 }
