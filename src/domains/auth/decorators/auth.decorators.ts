@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { AuthOnlyGuard } from '../guards/authOnly.guard';
 import { GuestOnlyGuard } from '../guards/guestOnly.guard';
 import { IncludeRefreshGuard } from '../guards/include-refresh.guard';
-import { AdminOnlyGuard } from '../guards/adminOnly.guard';
+import { AdminOnlyGuard } from '../guards/AdminOnly.guard';
 
 export const AuthOnly = () => UseGuards(AuthOnlyGuard);
 export const GuestOnly = () => UseGuards(GuestOnlyGuard);
