@@ -50,7 +50,7 @@ export class LessonDto {
   @IsNotEmpty()
   courseId: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: TaskDto })
   @Expose()
   @IsOptional()
   @IsArray()

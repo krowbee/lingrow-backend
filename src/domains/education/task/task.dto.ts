@@ -26,7 +26,7 @@ export class TaskDto {
   @IsString()
   soundUrl?: string;
   /* validate nested dto */
-  @ApiProperty()
+  @ApiProperty({ type: AnswerDto })
   @Expose()
   @IsArray()
   @ValidateNested({ each: true })
