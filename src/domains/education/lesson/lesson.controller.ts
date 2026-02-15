@@ -34,6 +34,7 @@ export class LessonController {
   })
   @ApiParam({ name: 'lessonSlug', type: String, description: "Lesson's slug" })
   @AuthOnly()
+  @ApiOkResponse({ type: [LessonDto] })
   @Get('/:lessonSlug')
   async getLessonWithTasks(
     @Param('lessonSlug') lessonSlug: string,
@@ -51,6 +52,7 @@ export class LessonController {
     description: 'Return lesson object',
   })
   @ApiBody({ type: CreateLessonDto })
+  @ApiOkResponse({ type: LessonDto })
   @AdminOnly()
   @Post('/')
   async createLesson(@Body() data: CreateLessonDto) {
@@ -64,6 +66,7 @@ export class LessonController {
   })
   @ApiBody({ type: UpdateLessonDto })
   @ApiParam({ name: 'lessonId', type: Number })
+  @ApiOkResponse({ type: LessonDto })
   @Patch('/:lessonId')
   async updateLesson(
     @Body() data: UpdateLessonDto,
