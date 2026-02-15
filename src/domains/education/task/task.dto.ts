@@ -7,6 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { PartialType, PickType } from '@nestjs/swagger';
 
 export class TaskDto {
   @Expose()
@@ -40,3 +41,15 @@ export class TaskDto {
   @IsNumber()
   choosedAnswer: number;
 }
+
+export class CreateTaskDto extends PickType(TaskDto, [
+  'question',
+  'soundUrl',
+  'lessonId',
+  'answers',
+  'order',
+]) {}
+
+export class UpdateTaskDto extends PartialType(
+  PickType(CreateTaskDto, ['answers', 'order', 'question', 'soundUrl']),
+) {}
